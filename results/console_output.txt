@@ -1,0 +1,226 @@
+== central run
+A_t_per_bn_all                      653.992
+A_t_per_bn_city                   2,821.065
+A_krw_per_t_all               1,529,071.231
+A_krw_per_t_city                354,476.047
+B_t_per_bn_all                      232.177
+B_t_per_bn_city                     748.957
+B_krw_per_t_all               4,307,067.155
+B_krw_per_t_city              1,335,190.818
+C_t_per_bn                         -460.011
+C_krw_per_t                             inf
+D_t_per_bn                         -469.250
+D_krw_per_t                             inf
+E_t_per_bn                          141.895
+E_krw_per_t                   7,047,442.204
+D_unit_cost_change_pct               -1.383
+D_system_saving_bn                    3.617
+C_minus_A_t_per_bn               -1,114.003
+A_jobs_local                          0.237
+A_jobs_national                       7.893
+C_jobs                               10.375
+D_jobs                               10.521
+T1_g_pkm_smr                         99.531
+T1_g_pkm_mix                         54.065
+T1_g_pkm_biogas                      46.772
+T1_g_pkm_green                       11.944
+T1_g_pkm_battery                     21.027
+T1_g_pkm_e_bus                       39.593
+T1_g_pkm_cng_bus                    208.333
+T1_g_pkm_car                        168.000
+T1_t_smr                         13,986.617
+T1_t_mix                          7,597.531
+T1_t_battery                      2,954.784
+T1_t_biogas                       6,572.591
+T1_t_green                        1,678.394
+T1_t_replaced_buses              11,634.375
+T1_h2_extra_cost_bn                  11.250
+T1_h2_extra_t_mix                 4,642.747
+R_C_t                             1,048.065
+R_D_t                             1,572.097
+R_C_net_cost_bn                      -4.426
+R_D_net_cost_bn                      -6.766
+R_D_minus_C_t                       524.032
+C_after_redesign_t_per_bn          -474.119
+D_package_net_bn                      5.957
+D_package_with_tram_bn               15.354
+W_t_yr                              906.161
+W_time_cost_bn_yr                     8.522
+W_t_total                         2,356.018
+W_time_cost_total_bn                 22.158
+W_t_h2_delay                        453.080
+W_cost_h2_delay_bn                    4.261
+W_extra_min                           2.423
+W_bus_share_cost                      0.146
+W_offpeak_share                       0.126
+tram_extra_cost_bn_yr_ops            11.250
+pkg_covers_pass_share                 0.143
+gap_pct_W                            -0.104
+M_cut_kt                            389.423
+M_cut_pct_city                        4.550
+E_t_per_year                     15,211.192
+gap_pct_R_C                           0.120
+gap_pct_R_D                           0.180
+gap_pct_T2_retire                     0.419
+gap_pct_E                             1.742
+gap_pct_C_10bn                       -0.371
+gap_pct_H2_vs_electric_tram          -0.532
+gap_pct_EV_2026_cohort                0.086
+T2_t_redeploy                       621.898
+T2_saving_retire_bn                   9.397
+T2_t_retire                       3,662.408
+
+== budget scale
+                                 scenario  public_cost_bn  city_cost_bn       tCO2 tCO2_basis
+           A  EV subsidy 2026 (passenger)          17.131         3.971 11,203.860   lifetime
+                     B  FCEV subsidy 2026           4.875         1.500  1,262.460   lifetime
+       C  city's ZEV money moved to buses           5.471         5.471 -1,768.953   per year
+             C  +10 bn KRW/yr bus service          10.000        10.000 -3,235.837   per year
+D  convert all 1,044 buses (saving if >0)          -3.617        -3.617      0.000   per year
+               E  10,000 KRW monthly pass         107.200       107.200 15,211.192   per year
+
+== mode share
+                   case  added_buses  transit_share_pp  car_share_pp
+city ZEV money to buses       21.834             0.129        -0.032
+          +10 bn KRW/yr       39.904             0.235        -0.059
+        10,000 KRW pass        0.000             1.350        -1.350
+
+== Monte Carlo (5% / median / 95%)
+                                      p05        median            p95   central_run
+A_t_per_bn_all                    341.987       687.814      1,273.818       653.992
+A_t_per_bn_city                 1,475.641     2,974.880      5,555.617     2,821.065
+A_krw_per_t_all               785,041.212 1,453,881.358  2,924,085.102 1,529,071.231
+A_krw_per_t_city              179,998.005   336,148.060    677,671.862   354,476.047
+B_t_per_bn_all                     87.178       186.451        329.384       232.177
+B_t_per_bn_city                   281.506       601.597      1,062.901       748.957
+B_krw_per_t_all             3,035,807.871 5,361,711.126 11,461,042.545 4,307,067.155
+B_krw_per_t_city              940,742.172 1,661,961.517  3,551,454.525 1,335,190.818
+C_t_per_bn                       -673.723      -470.312       -308.654      -460.011
+C_krw_per_t                           NaN           NaN            NaN           inf
+D_t_per_bn                       -692.969      -477.495       -311.218      -469.250
+D_krw_per_t                           NaN           NaN            NaN           inf
+E_t_per_bn                        109.215       341.805        793.628       141.895
+E_krw_per_t                 1,260,035.731 2,925,644.835  9,156,288.737 7,047,442.204
+D_unit_cost_change_pct             -6.480        -0.965          4.529        -1.383
+D_system_saving_bn                -11.600         2.474         16.596         3.617
+C_minus_A_t_per_bn             -1,777.286    -1,171.481       -777.991    -1,114.003
+A_jobs_local                        0.145         0.358          0.790         0.237
+A_jobs_national                     5.230         9.375         16.149         7.893
+C_jobs                              9.877        10.941         12.350        10.375
+D_jobs                              9.847        11.060         12.621        10.521
+T1_g_pkm_smr                       67.118        97.953        151.594        99.531
+T1_g_pkm_mix                       37.717        60.248        100.879        54.065
+T1_g_pkm_biogas                    32.385        52.516         85.411        46.772
+T1_g_pkm_green                      6.168        12.784         23.671        11.944
+T1_g_pkm_battery                   12.959        21.473         36.376        21.027
+T1_g_pkm_e_bus                     24.735        37.468         56.715        39.593
+T1_g_pkm_cng_bus                  139.015       193.497        269.006       208.333
+T1_g_pkm_car                      140.737       165.966        193.558       168.000
+T1_t_smr                       12,287.295    14,200.984     16,330.251    13,986.617
+T1_t_mix                        6,356.449     8,750.545     11,801.502     7,597.531
+T1_t_battery                    2,160.257     3,089.842      4,379.230     2,954.784
+T1_t_biogas                     5,539.448     7,580.140      9,974.722     6,572.591
+T1_t_green                        960.166     1,853.048      2,938.102     1,678.394
+T1_t_replaced_buses             7,201.509    12,133.083     19,329.871    11,634.375
+T1_h2_extra_cost_bn                10.155        11.221         12.277        11.250
+T1_h2_extra_t_mix               2,957.306     5,610.817      8,809.465     4,642.747
+R_C_t                            -635.294       693.743      2,450.535     1,048.065
+R_D_t                            -221.461     1,288.495      3,583.158     1,572.097
+R_C_net_cost_bn                    -8.382        -3.526          0.123        -4.426
+R_D_net_cost_bn                   -11.947        -6.071         -1.623        -6.766
+R_D_minus_C_t                      66.637       553.786      1,586.822       524.032
+C_after_redesign_t_per_bn        -706.276      -483.484       -311.062      -474.119
+D_package_net_bn                   -9.300         5.093         19.556         5.957
+D_package_with_tram_bn             -0.390        14.698         30.714        15.354
+W_t_yr                            500.297     1,086.632      2,207.361       906.161
+W_time_cost_bn_yr                   4.834        10.200         20.366         8.522
+W_t_total                       1,381.095     3,061.201      6,501.720     2,356.018
+W_time_cost_total_bn               13.256        28.815         59.681        22.158
+W_t_h2_delay                      134.239       516.403      1,354.634       453.080
+W_cost_h2_delay_bn                  1.288         4.855         12.394         4.261
+W_extra_min                         1.461         2.437          3.833         2.423
+W_bus_share_cost                    0.093         0.157          0.257         0.146
+W_offpeak_share                     0.046         0.156          0.304         0.126
+tram_extra_cost_bn_yr_ops          10.155        11.221         12.277        11.250
+pkg_covers_pass_share              -0.003         0.135          0.284         0.143
+gap_pct_W                          -0.253        -0.124         -0.057        -0.104
+M_cut_kt                          342.958       393.275        447.468       389.423
+M_cut_pct_city                      4.007         4.595          5.228         4.550
+E_t_per_year                   11,870.780    37,198.239     84,794.125    15,211.192
+gap_pct_R_C                        -0.073         0.079          0.281         0.120
+gap_pct_R_D                        -0.025         0.148          0.410         0.180
+gap_pct_T2_retire                   0.207         0.428          0.806         0.419
+gap_pct_E                           1.359         4.260          9.711         1.742
+gap_pct_C_10bn                     -0.523        -0.376         -0.243        -0.371
+gap_pct_H2_vs_electric_tram        -1.009        -0.643         -0.339        -0.532
+gap_pct_EV_2026_cohort              0.043         0.083          0.150         0.086
+T2_t_redeploy                     260.230       670.812      1,531.359       621.898
+T2_saving_retire_bn                 4.649         9.318         16.456         9.397
+T2_t_retire                     1,808.396     3,738.228      7,038.335     3,662.408
+
+== probabilities
+P(C abatement > 0)                                                0.000
+P(D abatement > 0)                                                0.000
+P(C beats A per bn, all public money)                             0.000
+P(D cheaper than C per bus-day)                                   0.609
+P(E beats A per bn, all public money)                             0.156
+P(grey-H2 tram > CNG bus per pkm)                                 0.019
+P(restructuring under C cuts CO2)                                 0.808
+P(restructuring under C pays for itself)                          0.944
+P(D package (unit cost + better redesign) beats C, before tram)   0.713
+P(D package + tram restructuring beats C, after 2030)             0.945
+P(added service after redesign cuts CO2)                          0.000
+P(mix-H2 tram > battery tram per pkm)                             1.000
+
+== break-even D
+                   param         central  saving_at_low  saving_at_high  break_even_value
+   licence_value_per_bus 100,000,000.000          8.104          -2.792   156,650,000.000
+   pay_change_per_driver           0.000         12.199          -4.964             0.021
+public_eff_penalty_share           0.000         20.623         -13.388             0.014
+           leakage_share           0.008          2.048           8.065               NaN
+     depot_value_per_bus  50,000,000.000          5.241          -2.792   106,500,000.000
+
+== tornado C_minus_A_t_per_bn (base -1,114.00)
+                param     at_low    at_high     swing
+     ev_additionality   -818.040 -1,892.110 1,074.070
+             ice_g_km   -886.680 -1,284.490   397.810
+    ev_displace_share   -861.430 -1,240.290   378.860
+             car_life   -929.080 -1,303.430   374.350
+addbus_share_electric -1,283.950   -925.180   358.770
+              car_vkt   -994.200 -1,276.090   281.890
+           ev_sub_nat -1,230.220 -1,021.570   208.660
+       bus_km_per_day -1,016.060 -1,220.110   204.040
+     std_cost_veh_day -1,214.660 -1,068.110   146.550
+         bus_cng_g_km -1,050.530 -1,193.340   142.810
+        car_diversion -1,171.000 -1,038.010   132.990
+            ev_kwh_km -1,166.100 -1,044.540   121.550
+
+== tornado D_system_saving_bn (base 3.62)
+                   param  at_low  at_high  swing
+public_eff_penalty_share  20.620  -13.390 34.010
+   pay_change_per_driver  12.200   -4.960 17.160
+   licence_value_per_bus   8.100   -2.790 10.900
+     depot_value_per_bus   5.240   -2.790  8.030
+           leakage_share   2.050    8.070  6.020
+      overhead_dup_share   1.520    7.020  5.490
+            profit_share   1.000    4.660  3.660
+        std_cost_veh_day   2.130    4.530  2.400
+           discount_rate   4.730    2.440  2.290
+   transition_cost_total   3.710    3.430  0.280
+             grid_g_2026   3.620    3.620  0.000
+                car_life   3.620    3.620  0.000
+
+== tornado D_package_net_bn (base 5.96)
+                   param  at_low  at_high  swing
+public_eff_penalty_share  22.960  -11.050 34.010
+   pay_change_per_driver  14.540   -2.620 17.160
+   licence_value_per_bus  10.440   -0.450 10.900
+     depot_value_per_bus   7.580   -0.450  8.030
+           leakage_share   4.390   10.400  6.020
+      overhead_dup_share   3.860    9.360  5.490
+         redesign_impl_C   8.300    3.620  4.680
+      redesign_trip_gain   4.550    9.230  4.680
+            profit_share   3.340    7.000  3.660
+        std_cost_veh_day   4.470    6.870  2.400
+         redesign_impl_D   4.400    6.740  2.340
+           discount_rate   7.070    4.780  2.290

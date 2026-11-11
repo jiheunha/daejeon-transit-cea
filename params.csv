@@ -1,0 +1,125 @@
+name,low,central,high,unit,source,confidence,note
+# ---------- electricity grid ----------,,,,,,,
+grid_g_2026,370,400,420,gCO2/kWh,Official 2023 consumption-side factor 0.4173 t/MWh (국가온실가스통계관리위원회 2025-12-17; korea.kr newsId=156735726); 2026 assumed slightly lower,DERIVED,2024+ factor not yet published
+grid_g_2040,80,150,250,gCO2/kWh,Derived: 11th 전력수급기본계획 2030 target 145.9 Mt / 642.6 TWh = ~227 g/kWh; 2035 NDC power -68.8~-75.3% vs 2018 = ~100-130 g/kWh (newsis NISX20251110_0003397077),DERIVED,No official g/kWh path exists; high = plans slip
+# ---------- passenger cars (shared by A B C E) ----------,,,,,,,
+car_vkt,9500,11200,13500,km/yr,TS 2025 driving stats: non-commercial cars 30.8 km/day (fnnews 2026-06-29 202606291005221113),OFFICIAL,
+car_life,12,15,18,yr,Literature standard 15 yr (Hong Kim Verboven 2026 arXiv 2607.14446); scrapped cars average 213858 km (ddaily 2026-08-04),LITERATURE,
+ice_g_km,160,200,230,gCO2e/km,Fuel-cycle WTW of new gasoline car 199.9 g/km sales-weighted (Hong et al. 2026 Table 3); low = hybrid counterfactual,LITERATURE,the car an additional EV replaces
+car_fleet_g_km,170,210,250,gCO2e/km,Gasoline WTW 225 g/km national avg 2017 (Choi et al. 2020 Applied Energy 265:114754) adjusted for hybrids/EVs in fleet,LITERATURE,avoided car-km in bus/fare scenarios
+car_occupancy,1.10,1.25,1.45,persons/car,Seoul region household travel survey 2010: 1.23-1.40 (80.5% driver only),LITERATURE,no Daejeon value
+car_trip_km,5,7.5,11,km/trip,No Daejeon value found; bounded by typical intra-city trip length,ASSUMPTION,length of a car trip diverted to bus
+# ---------- A. battery EV subsidy ----------,,,,,,,
+ev_sub_nat,4.5e6,5.6e6,6.8e6,KRW/car,2026 national cap 5.80M (zdnet 20251231124742); Ioniq 5 gets 5.64M; high adds national 전환지원금 1.0M,OFFICIAL,average actually paid not published
+ev_sub_local,1.35e6,1.69e6,2.04e6,KRW/car,Daejeon 2026 시비 1.74M max = 30% of national; Ioniq 5 1.69M; +0.3M local 전환지원금 (Seoul Shinmun 2026-07-23; city notice via blog),OFFICIAL,
+ev_kwh_km,0.17,0.20,0.24,kWh/km,Ioniq 5 LR 5.1-5.2 km/kWh label (carnoon) + ~5-15% charging loss,LITERATURE,
+ev_batt_kwh,58,70,84,kWh,Ioniq 5 LR 84 kWh; EV3/Model Y 58-81 kWh,LITERATURE,
+batt_kgco2_kwh,61,80,106,kgCO2e/kWh,IVL report C444 (2019): 61-106 kg/kWh,LITERATURE,battery manufacturing sensitivity
+ice_mfg_credit_t,1.0,2.0,3.0,tCO2e/car,Engine/drivetrain manufacturing avoided; calibrated so central EV-minus-ICE vehicle-cycle = 3.6 t (Hong et al. 2026: 10.61 vs 6.99 t),DERIVED,
+ev_additionality,0.15,0.274,0.60,share,"KDI FOCUS 135 (김현석 2024): 27.4% of 2019-22 subsidised EVs were caused by the subsidy (central, revealed preference). High: KIPF 2026 조세특례 심층평가(8) p.116, stated choice: cutting EV support by 4 M KRW drops the share staying with an EV from 80.1% to 33.4%; discounted for stated-preference bias",LITERATURE,free-rider share = 1 - this; high raised from 0.45 to 0.60 on 2026-11-11
+ev_displace_share,0.70,0.90,1.00,share,No Korean data on second-car purchases; KCTU report pp.255-256 (ICE fleet stays ~23 million to 2030) suggests EVs partly add to the fleet,ASSUMPTION,share of EV km that replaces ICE km
+ev_cars_2026,1800,2350,2350,cars/yr,Daejeon 2026: 924 passenger EVs in H1 (newspim 20260129000509) + 1428 H2 applicants all funded (Seoul Shinmun 2026-07-23),NEWS,scale run only
+# ---------- B. hydrogen FCEV subsidy ----------,,,,,,,
+fcev_sub_nat,22.5e6,22.5e6,22.5e6,KRW/car,National 22.5M fixed (newsis NISX20260105_0003465353),OFFICIAL,
+fcev_sub_local,10.0e6,10.0e6,10.0e6,KRW/car,Daejeon total 32.5M per car (asiae 2026012809452885014) minus national,DERIVED,
+fcev_kg_km,0.0093,0.0100,0.0115,kgH2/km,Nexo 2nd gen 107.6 km/kg; 1st gen 96.2 km/kg; WLTP 0.95 kg/100km,LITERATURE,
+fcev_additionality,0.30,0.50,0.80,share,KDI 2024: FCEV price elasticity -2.90 (vs -1.58 for EV) implies higher additionality; no direct estimate,ASSUMPTION,
+fcev_displace_share,0.70,0.90,1.00,share,same as EV,ASSUMPTION,
+fcev_extra_mfg_t,1.0,2.0,4.0,tCO2e/car,Fuel-cell stack + carbon-fibre tanks vs ICE; literature range,ASSUMPTION,
+h2_station_subsidy,1.5e9,2.25e9,3.0e9,KRW/station,Passenger station ~3.0bn; national 50% + local 25% public (전북일보 2021); cap 3.0bn (asiae 2024),NEWS,public share only
+h2_station_local_share,0.33,0.33,0.33,share,Local 25% of 75% public,DERIVED,
+h2_station_cars_served,300,600,1200,cars per station life,"No data; ~250 kg/day station / ~1 kg per car-day, partly used",ASSUMPTION,
+fcev_cars_2026,150,150,150,cars/yr,Daejeon 2026 150 FCEVs (asiae 2026012809452885014),OFFICIAL,scale run only
+# ---------- hydrogen well-to-tank (kgCO2e per kg H2 at the nozzle) ----------,,,,,,,
+h2_ef_smr,10.5,12.5,14.5,kgCO2e/kgH2,Korean LCA: reforming 11.2 (Sustainability 2025 17(22):9944) + compression/delivery ~1.3,LITERATURE,grey hydrogen
+h2_ef_byproduct,1.5,4.5,11.0,kgCO2e/kgH2,Korean LCA 2.63 + compression (allocation); system expansion 8.5-9.3 (Frontiers Energy Res. 2024),LITERATURE,allocation choice drives the range
+h2_ef_green,0.5,1.5,3.0,kgCO2e/kgH2,Renewable electrolysis; 청정수소 grades 1-3; compression on grid,LITERATURE,
+h2_share_byproduct,0.55,0.70,0.75,share,"Mobility supply Sept 2025: by-product 35% + liquefied 39% (SK Incheon, by-product feed) + reforming 25% + electrolysis 1% (구준모 2025, h2hub.or.kr)",OFFICIAL,
+h2_share_green,0.0,0.01,0.03,share,same source,OFFICIAL,
+h2_ef_biogas_process,1.0,2.5,4.0,kgCO2e/kgH2,Landfill-gas upgrading + reforming energy + compression; biogenic CO2 counted as 0; no land-use change (waste feedstock),ASSUMPTION,
+h2_biogas_counterfactual,0.0,2.0,7.0,kgCO2e/kgH2,Displaced use of landfill gas: 0 if now flared; ~5-8 if now generating grid power (~4 kg CH4/kg H2 at 35% power efficiency on ~400 g/kWh grid),ASSUMPTION,current use of Daejeon landfill gas not found
+h2_biogas_coverage,0.2,0.4,0.8,share,Share of tram demand (3.25 t/day) biogas could supply; Hyundai Rotem proposal claimed 3.1 t/day; landfill gas declines after closure,ASSUMPTION,rest supplied by the national mobility mix
+# ---------- C. city bus under 준공영제 (Daejeon official) ----------,,,,,,,
+std_cost_veh_day,600000,686571,740000,KRW/vehicle-day,Daejeon 준공영제 운영현황 2025: total cost per licensed bus-day 686571 (daejeon.go.kr FileUpload/DRH/202607/20260713103643109.pdf),OFFICIAL,low = marginal bus without overhead
+fleet,1044,1044,1044,buses,Daejeon licensed buses 2024-2025 (same source),OFFICIAL,
+bus_km_per_day,280,340,405,km/licensed bus-day,CCEJ 2026-04-13: 154.25M bus-km in 2024 = 405; fuel-cost check (91553 KRW/day) suggests lower,DERIVED,city 운행실적 needed
+ridership_day,384624,384624,384624,boardings/day,Daejeon 2025: 140.39M boardings (official 운영현황),OFFICIAL,
+trip_per_boarding,0.75,0.79,0.85,linked trips/boarding,Transfer share ~21% of boardings (official 운영현황),OFFICIAL,
+fare_per_boarding,950,1111,1200,KRW/boarding,Fare revenue 1560억 / 140.39M boardings (2025),DERIVED,
+service_elasticity,0.30,0.50,0.75,-,"Paulley et al. 2006 / TRL593: bus vehicle-km elasticity +0.38 short run, +0.66 long run",LITERATURE,
+car_diversion,0.10,0.25,0.45,share,CARB 2013 review: 10-50% of new transit trips replace car trips; IPPR uses 24% (Dunkerley et al. 2018),LITERATURE,
+addbus_share_electric,0.13,0.40,0.70,share,"Fleet ~137 electric of 1044 (namu.wiki 2024-06, unofficial); new buses are mostly zero-emission",ASSUMPTION,fuel mix of buses added for new service
+addbus_share_hydrogen,0.04,0.15,0.25,share,~43 hydrogen buses 2024 (namu.wiki); city plan ~20/yr (dailycc 664571),ASSUMPTION,
+bus_cng_g_km,1050,1250,1500,gCO2e/km,CNG city bus ~0.45-0.55 Nm3/km x ~2.2 kgCO2/Nm3 + upstream and methane slip,LITERATURE,
+bus_e_kwh_km,1.1,1.3,1.5,kWh/km,"Korean 11-12 m electric bus, incl. charging loss",LITERATURE,
+bus_h2_kg_km,0.07,0.08,0.10,kgH2/km,Hyundai Elec City FCEV / Universe FCEV,LITERATURE,
+drivers_per_bus,2.20,2.37,2.87,drivers/bus,Daejeon 2025: 2473 drivers / 1044 buses (official); 2.87 = standard-cost norm (KCTU report p.265),OFFICIAL,
+other_staff_per_bus,0.23,0.23,0.23,staff/bus,Daejeon 2025: 119 maintenance + 102 admin + 19 executives / 1044,OFFICIAL,
+# ---------- D. full public operation: cost components as share of standard cost ----------,,,,,,,
+profit_share,0.015,0.025,0.029,share,2025 standard cost: profit 10283 + performance bonus 9477 KRW/day = 2.9% of 686571; low = profit only,OFFICIAL,public operator may keep some incentive pay
+overhead_dup_share,0.004,0.012,0.025,share,Executives 4624 (0.67%) + admin 19124 (2.8%) KRW/day; merging 13 firms removes executives and part of admin,DERIVED,
+leakage_share,0.002,0.008,0.025,share,감사원 2021: Seoul overpaid maintenance/insurance/tires ~0.3%/yr; Busan undeducted missed runs ~2.5%/yr; Pohang double depreciation,DERIVED,bonus fraud excluded (it sits inside profit_share)
+pay_change_per_driver,-0.05,0.0,0.05,share of pay per driver,Change in pay per driver under public operation compared with today. KCTU p.268: semi-public pay already above public bus workplaces (<0); KRITI 2023: public operation may raise pay and staffing (>0),ASSUMPTION,central 0 with symmetric +-5% range (2026-10-19); applied to the driver-labour share of cost only
+labour_share_of_cost,0.656,0.656,0.656,share,"Daejeon 2025 운영현황: driver labour 450,358 of 686,571 KRW per bus-day",OFFICIAL,
+public_eff_penalty_share,-0.065,0.0,0.065,share,London tendering: no public/private cost difference; Barcelona: public cheaper incl. transaction costs; Korean public corps often costly,ASSUMPTION,"central 0 and symmetric range (+-6.5%, same total width as the earlier -3..+10%) set on 2026-10-19: London tendering found no public/private difference"
+licence_value_per_bus,0.3e8,1.0e8,2.0e8,KRW/bus,Seoul 2008 fleet-cut compensation 30M/bus (KRITI 2023); PE fund size 1.7-3.1억/bus incl. vehicles and depots (dealsite 118784),DERIVED,legal duty to compensate is contested
+depot_value_per_bus,0,0.5e8,1.5e8,KRW/bus,No data on Daejeon depot ownership,ASSUMPTION,
+depot_rent_day,4149,4149,4149,KRW/vehicle-day,2025 standard cost depot item (official),OFFICIAL,saved if depots are bought
+transition_cost_total,0.5e9,2.0e9,5.0e9,KRW one-off,"No Korean estimate; IT, legal, set-up",ASSUMPTION,
+discount_rate,0.035,0.045,0.055,-,KDI 예비타당성 social discount rate 4.5%,OFFICIAL,
+buyout_years,30,30,30,yr,annualisation period,ASSUMPTION,
+# ---------- E. fare reduction ----------,,,,,,,
+fare_pass_cost,90e9,107.2e9,130e9,KRW/yr,정의당 대전시당 proposal (OhmyNews 2023-06-14): 10000 KRW monthly pass = 107.2bn/yr,NEWS,
+total_trips_day,2.2e6,2.45e6,2.9e6,person-trips/day,Derived: transit ~420k trips/day = 17.3% share in 2017 (booklet p.16),DERIVED,
+car_mode_share,0.425,0.45,0.53,share,2017 O/D: 42.5% (booklet p.16); 2024 survey 53% (different definition),OFFICIAL,
+fare_switch_share,0.01,0.03,0.18,share of car trips,"Seoul 기후동행카드 4-9% of users came from car (dailian 1350937); 18% KOTI figure (user-supplied, not located) used as upper bound only",LITERATURE,
+# ---------- T1. hydrogen tram ----------,,,,,,,
+tram_trainkm_day,8000,8860,9500,train-km/day,"Official timetable (daejeon.go.kr/djTram menuSeq=7704): 05:30-00:30, main 8 min peak (07-09, 18-20) / 10.67 min off-peak, branches 10.67 min; main loop 33.819 km both directions, branch round trips 7.26 + 3.27 km (KDI 2024 p.317); fleet 34 sets = 30 operating + 4 spare (KDI p.259)",DERIVED,2 x 114 x 33.8 + 107 x 10.5 km
+tram_h2_kg_km,0.32,0.346,0.40,kgH2/train-km,KDI 2024 사업계획적정성재검토 appendix p.317: 12 tanks x 6.54 kg = 78.48 kg; 2.89 km/kg (0.346 kg/km); range 227 km. Real-world range +-15%. Cross-check: city 3.25 t/day (Segye 2026-06-24),OFFICIAL,low/high = real-world spread
+tram_riders_day,40000,70000,110000,boardings/day,No tram forecast published (예타 exempt 2019; KDI 2024 re-review did not re-estimate daily demand). Anchor: design peak max load 1668 pax/h/direction in 2030 (KDI 2024 p.151) = 8.38 min headway; 2012 plan: rail 461k/day citywide in 2030,ASSUMPTION,
+tram_trip_km,4,5.5,7,km/trip,No data,ASSUMPTION,
+tram_batt_kwh_km,3.5,5.0,7.0,kWh/train-km,Lille Citadis simulation ~3.1 kWh/vehicle-km; 35 m 81 t unit; fuel-cell equivalent ~6 kWh,ASSUMPTION,battery or catenary tram on the grid
+bus_avg_load,4,6,10,passengers/bus,Derived: 140M boardings x ~5 km / ~125-154M bus-km,ASSUMPTION,for g per passenger-km
+# ---------- T2. bus restructuring at tram opening ----------,,,,,,,
+t2_overlap_buses,80,150,250,buses,No route data published; 13 routes in sections 1-2 (cctoday 2212021); ~10 buses/route,ASSUMPTION,
+t2_keep_share,0.3,0.5,0.7,share,Share kept for local access,ASSUMPTION,
+t2_resistance,0.2,0.5,0.8,share,Share of removable buses operators keep on the corridor under 준공영제,ASSUMPTION,adjustable; not a fact
+# ---------- jobs ----------,,,,,,,
+ev_price,40e6,50e6,60e6,KRW/car,Typical subsidy-eligible EV <53M,ASSUMPTION,
+ev_domestic_share,0.55,0.70,0.85,share,"Imported EVs (Tesla, BYD etc.) take a large share",ASSUMPTION,
+car_jobs_per_bn,4,6,8,job-years per bn KRW final demand,Bank of Korea input-output employment inducement range for motor vehicles,ASSUMPTION,check BoK 2020/2022 table
+ev_local_job_share,0.01,0.03,0.08,share,No car assembly in Daejeon (tyre plant only),ASSUMPTION,
+# ---------- R. route restructuring (no or few added buses) ----------,,,,,,,
+redesign_trip_gain,0.02,0.05,0.12,share of linked trips,Daejeon 2008-12-30 reform: boardings +13.9% but trips excl. transfers +3.9% after 3 weeks (daejeon.go.kr press release 2009-01-18); Houston 2015: bus +1.2% yr 1 (Streetsblog 2016); Seoul 2004: bus +9.9% (with fare integration and median bus lanes; mediahub.seoul.go.kr 145901),LITERATURE,full-implementation effect; long-run may exceed 3-week value
+redesign_impl_C,0.3,0.6,0.9,share,Share of the redesign actually implemented under 준공영제 (operators negotiate routes; compensation per vehicle). Daejeon 2008 reform WAS done under 준공영제,ASSUMPTION,adjustable; the governance hypothesis
+redesign_impl_D,0.7,0.9,1.0,share,Share implemented by a single public operator that owns routes,ASSUMPTION,adjustable
+redesign_added_bus_share,0.0,0.0,0.02,share of fleet,Daejeon 2008 added 21 buses (~2% of fleet) to fix overloads,NEWS,kept at 0 centrally to isolate pure restructuring
+redesign_oneoff_cost,0.5e9,2.0e9,5.0e9,KRW one-off,"Planning study, stop relocation (80 moved + 30 new in 2008), information; no cost figure found",ASSUMPTION,annualised over 10 years at the discount rate
+# ---------- T1 fiscal: tram traction energy cost ----------,,,,,,,
+tram_h2_energy_cost_yr,11.9e9,13.5e9,15.0e9,KRW/yr,Hyundai Rotem 30-yr traction energy cost 358.2bn (2025-07; was 147bn in 2023-11) = 11.9bn/yr (대전참여자치시민연대 newsletter 2026-10-14); council forum 2026-09-22: ~15bn/yr at market H2 price 11000-13000 KRW/kg,NEWS,"hydrogen supply plan at 4,344 KRW/kg scrapped 2025-05"
+tram_elec_energy_cost_yr,2.0e9,2.25e9,2.5e9,KRW/yr,Council forum 2026-09-22: catenary tram electricity 2.0-2.5bn/yr (news.tf.co.kr 2368939),NEWS,
+# ---------- M. Daejeon targets and the 40% transit-share claim ----------,,,,,,,
+daejeon_ghg_2018_kt,8559.3,8559.3,8559.3,ktCO2e,대전시 탄소중립녹색성장 기본계획 via 버스공영제.pdf p.42 Table 14,OFFICIAL,
+transport_ghg_2018_kt,2701.2,2701.2,2701.2,ktCO2e,same Table 14 (수송),OFFICIAL,
+transport_ghg_2030_target_kt,1828.0,1828.0,1828.0,ktCO2e,"same Table 14: -32% by 2030 (2033: 1719.1 kt, -36%)",OFFICIAL,
+transit_share_motorized_2022,0.227,0.227,0.227,share,KTDB 2022 national transport survey via 버스공영제.pdf p.41 Figure 6 (car/transit/taxi basis),OFFICIAL,2nd lowest of 7 metro cities (Ulsan 17.6%)
+car_share_motorized_2022,0.60,0.66,0.70,share,Read off Figure 6 (taxi ~10%); not printed in the book,ASSUMPTION,
+car_share_of_transport_ghg,0.45,0.55,0.65,share,Passenger cars' share of Daejeon transport emissions; not published,ASSUMPTION,
+# ---------- W. tram construction congestion (added 2026-11-11) ----------,,,,,,,
+w_daily_traffic,50000,60000,70000,vehicles/day,"대덕대교: close to 60,000 vehicles a day (경향신문 2026-10-28, khan.co.kr/article/202610281625001)",NEWS,city traffic count needed
+w_peak_share,0.20,0.28,0.35,share of daily traffic,"Share of daily traffic in the congested morning and evening peaks; no Daejeon count found",ASSUMPTION,
+w_corridors,1,2,4,bottlenecks,"Number of 대덕대교-sized bottlenecks: 대덕대교 and 한밭대로 중리 are measured; 14 work sections in total",ASSUMPTION,
+w_segment_km,0.8,1.5,2.5,km,"Length of road slowed at each bottleneck; not published",ASSUMPTION,
+w_speed_before_kmh,15,20,25,km/h,"Peak speed before closure; after closure 8-13 km/h on 둔산→연구단지 evening after a 37-42% drop implies roughly 13-22 km/h before (대전참여자치시민연대 2026-11-05)",DERIVED,
+w_speed_drop,0.25,0.35,0.42,share,"Measured: car speed -19 to -30% morning, -37 to -42% evening at 대덕대교; -44% evening at 한밭대로 중리 (대전참여자치시민연대 2026-11-05)",NEWS,
+w_years,2.0,2.6,4.0,years,"대덕대교 closure 2026-10-19 to 2029-05-12 = 2.6 years; tram works run to 2030 H2",NEWS,
+w_idle_co2_kg_h,1.4,2.3,3.5,kgCO2 per vehicle-hour,"Extra time in congestion burns fuel at about the idling rate: 0.6-1.5 L/h petrol x 2.3 kg CO2/L (US DOE idling estimates)",LITERATURE,
+w_vot_krw_h,10000,15000,20000,KRW per person-hour,"Value of travel time; KDI preliminary feasibility guideline value not retrieved",ASSUMPTION,check KDI 예타 일반지침
+w_h2_delay_months,0,6,12,months,"Opening slip attributable to the hydrogen choice: test running extended 6 months, no technical standard yet (Segye 2026-06-24; 띠모크라시 2026-10-14)",ASSUMPTION,
+w_offpeak_speed_kmh,30,35,45,km/h,"Off-peak speed through the bottleneck before closure; not measured",ASSUMPTION,
+w_offpeak_drop,0.0,0.05,0.15,share,"Off-peak slowdown; the NGO measured peaks only and the city reports 24-hour averages",ASSUMPTION,
+w_bus_drop,0.20,0.27,0.34,share,"Measured evening bus speed change at 대덕대교: -27% (-34% toward 둔산) (대전참여자치시민연대 2026-11-05)",NEWS,
+w_buses_per_peak_hour,30,50,80,buses/hour,"City buses crossing a bottleneck per peak hour, both directions; route-level counts not published",ASSUMPTION,
+w_bus_load,20,30,45,passengers/bus,"Average peak load on buses crossing the bottleneck",ASSUMPTION,
+w_peak_hours,3,4,5,hours/day,"Congested hours per weekday (morning + evening)",ASSUMPTION,
+w_bus_idle_co2_kg_h,3.0,5.0,7.0,kgCO2 per bus-hour,"CNG city bus idling; literature range",LITERATURE,

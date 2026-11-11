@@ -1,0 +1,7 @@
+scenario,public_cost_bn,city_cost_bn,tCO2,tCO2_basis
+A  EV subsidy 2026 (passenger),17.1315,3.9715,11203.859999999999,lifetime
+B  FCEV subsidy 2026,4.875,1.5,1262.4599999999998,lifetime
+C  city's ZEV money moved to buses,5.4715,5.4715,-1768.9527191216457,per year
+C  +10 bn KRW/yr bus service,10.0,10.0,-3235.836761108199,per year
+"D  convert all 1,044 buses (saving if >0)",-3.6174327713971204,-3.6174327713971204,0.0,per year
+"E  10,000 KRW monthly pass",107.2,107.2,15211.1925,per year

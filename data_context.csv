@@ -1,0 +1,30 @@
+item,value,unit,source
+transit_share_Seoul,55.6,% of motorized trips,"KTDB 2022 national transport survey via 버스공영제.pdf p.41 Fig. 6"
+transit_share_Busan,38.8,% of motorized trips,same
+transit_share_Gwangju,29.7,% of motorized trips,same
+transit_share_Incheon,29.5,% of motorized trips,same
+transit_share_Daegu,27.0,% of motorized trips,same
+transit_share_Daejeon,22.7,% of motorized trips,same
+transit_share_Ulsan,17.6,% of motorized trips,same
+transport_ghg_2018,2701.2,kt CO2e,"대전시 탄소중립·녹색성장 기본계획 via 버스공영제.pdf p.42 Table 14"
+transport_ghg_2030_target,1828.0,kt CO2e,same
+transport_ghg_2033_target,1719.1,kt CO2e,same
+speed_car_morning_low,-19,% change,"대전참여자치시민연대 2026-11-05: 대덕대교 after lane closure (10 weekdays)"
+speed_car_morning_high,-30,% change,same
+speed_car_evening_low,-37,% change,same
+speed_car_evening_high,-42,% change,same
+speed_bus_evening,-27,% change,same
+speed_bus_evening_dunsan,-34,% change,same
+speed_jungri_evening,-44,% change,"same (한밭대로 중리, from 2026-09-30)"
+runs_201_before,255,runs/day,same
+runs_201_after,245,runs/day,same
+runs_211_before,158,runs/day,same
+runs_211_after,146,runs/day,same
+tukgu_riders_per_trip,9,riders per loop,"카이스트신문 2025-07-22 (idxno=22381): about 900,000 riders 2021-08-24 to 2025-07-04, about 9 per trip"
+bus104_riders_per_trip,53,riders per trip,"same article: route 104 averages about 53 riders per trip"
+tukgu_headway_min,40,minutes,"same; one-way loop of 23.5 km taking 65-80 minutes (카이스트신문 2023-05-02)"
+bus604_headway_min,11,minutes,"카이스트신문 2026-06-02 (idxno=22848): route 604 every 11 minutes"
+tukgu_cost_bn_yr,0.88,bn KRW per year,"Derived: about 4.4 bn KRW over 5 years (Daejeon city via 연합뉴스 2026-07-18)"
+tukgu_riders_total,900000,riders,"카이스트신문 2025-07-22; daily average about 400"
+tukgu_oppose_2023,97,% of 1621 respondents,"카이스트신문 2023-04-03 student survey"
+tukgu_oppose_2025,99,% of respondents,"카이스트신문 2025-07-22 student survey"

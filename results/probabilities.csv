@@ -1,0 +1,13 @@
+,probability
+P(C abatement > 0),0.0
+P(D abatement > 0),0.0
+"P(C beats A per bn, all public money)",0.0
+P(D cheaper than C per bus-day),0.6091
+"P(E beats A per bn, all public money)",0.1559
+P(grey-H2 tram > CNG bus per pkm),0.0186
+P(restructuring under C cuts CO2),0.8077
+P(restructuring under C pays for itself),0.9436
+"P(D package (unit cost + better redesign) beats C, before tram)",0.7127
+"P(D package + tram restructuring beats C, after 2030)",0.945
+P(added service after redesign cuts CO2),0.0
+P(mix-H2 tram > battery tram per pkm),1.0
