@@ -430,34 +430,48 @@ def fig_a2(mc):
 
 
 def fig_h2(mc):
-    """Scale: the needed cut drawn to scale (a), then the policies magnified (b)."""
+    """Scale as a waffle: one square = 1 kt CO2 a year. Grey squares are the cut
+    Daejeon needs by 2030; coloured squares are what each policy cuts or adds."""
     d = pd.read_csv("data_context.csv").set_index("item")["value"]
     need = d["transport_ghg_2018"] - d["transport_ghg_2030_target"]
-    cuts = (mc["gap_pct_T2_retire"] + mc["gap_pct_R_D"] + mc["gap_pct_EV_2026_cohort"]).median() * need / 100
-    rows = [("Retire tram-duplicating buses", "gap_pct_T2_retire", K["T2"]),
-            ("Redesign, public operator", "gap_pct_R_D", K["R_D"]),
-            ("Redesign, semi-public", "gap_pct_R_C", K["R_C"]),
-            ("2026 EV subsidy cohort", "gap_pct_EV_2026_cohort", K["A_all"]),
-            ("Tram works congestion", "gap_pct_W", K["W"]),
-            ("+10 bn KRW/yr more buses", "gap_pct_C_10bn", K["C"]),
-            ("H$_2$ tram, not electric", "gap_pct_H2_vs_electric_tram", K["H2_mix"])]
-    mk = mc.copy()
-    for _, col, _c in rows:
-        mk[col] = mc[col] * need / 100
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=SLOT, gridspec_kw={"height_ratios": [1.0, 4.2]})
-    ax1.barh(0, need, color="#d0d0d0", height=0.6)
-    ax1.barh(0, cuts, color=K["T2"], height=0.6)
-    ax1.text(need / 2, 0, f"needed by 2030: {need:,.0f} kt a year", ha="center", va="center", fontsize=FS - 1)
-    ax1.annotate(f"retirement + redesign + EV cohort: {cuts:.0f} kt", (cuts / 2, 0.3), xytext=(10, 7), textcoords="offset points",
-                 fontsize=FS - 1, fontweight="bold", color=K["T2"], ha="left", va="bottom",
-                 arrowprops=dict(arrowstyle="-", color=K["T2"], lw=1.2, shrinkA=0, shrinkB=0))
-    ax1.set_title("(a) Drawn to scale", pad=30)
-    ax1.set_xlim(0, need * 1.005)
-    ax1.set_ylim(-0.3, 0.3)
-    ax1.axis("off")
-    _hbars(ax2, rows, mk, fmt=lambda v: f"{v:+.1f}")
-    ax2.axvline(0, color="#222222", lw=1)
-    ax2.set_title("(b) Magnified about 100 times, kt a year")
+    kt = lambda col: abs(mc[col].median()) * need / 100
+    cuts = [("Retire tram-duplicating buses", kt("gap_pct_T2_retire"), K["T2"]),
+            ("Redesign, public operator", kt("gap_pct_R_D"), K["R_D"]),
+            ("2026 EV subsidy cohort", kt("gap_pct_EV_2026_cohort"), K["A_all"])]
+    adds = [("H$_2$ tram, not electric", kt("gap_pct_H2_vs_electric_tram"), K["H2_mix"]),
+            ("+10 bn KRW/yr more buses", kt("gap_pct_C_10bn"), K["C"]),
+            ("Tram works congestion", kt("gap_pct_W"), K["W"])]
+    n, cols = int(round(need)), 45
+    colours = []
+    for _, v, c in cuts:
+        colours += [c] * max(1, int(round(v)))
+    colours += ["#d4d4d4"] * (n - len(colours))
+    extra = []
+    for _, v, c in adds:
+        extra += [c] * max(1, int(round(v)))
+    fig, ax = plt.subplots(figsize=SLOT)
+    s = 0.8
+    for k, c in enumerate(colours):
+        ax.add_patch(plt.Rectangle((k % cols, -(k // cols)), s, s, color=c, lw=0))
+    k0 = len(colours) + 2
+    for j, c in enumerate(extra):
+        k = k0 + j
+        ax.add_patch(plt.Rectangle((k % cols, -(k // cols)), s, s, color=c, lw=0))
+    rows = (k0 + len(extra) - 1) // cols + 1
+    ax.set_xlim(-0.3, cols)
+    top = 3.6
+    ax.text(0, top - 0.4, f"One square = 1 kt CO$_2$ a year. Grey: the {n} kt cut needed by 2030",
+            fontsize=FS - 1, va="bottom")
+    y0 = -rows - 1.2
+    for x0, head, items in ((0, "Cuts", cuts), (23, "Adds", adds)):
+        ax.text(x0, y0, head, fontsize=FS - 1, fontweight="bold", va="center")
+        for i, (label, v, c) in enumerate(items):
+            yy = y0 - 2.2 * (i + 1)
+            ax.add_patch(plt.Rectangle((x0, yy - 0.6), 1.2, 1.2, color=c, lw=0))
+            ax.text(x0 + 2, yy, f"{label}  ", fontsize=FS - 2, va="center")
+            ax.text(x0 + 21.3, yy, f"{v:.1f}", fontsize=FS - 2, fontweight="bold", va="center", ha="right")
+    ax.set_ylim(y0 - 2.2 * 3 - 1.2, top + 1.2)
+    ax.axis("off")
     _save(fig, "h2_scale_vs_target_short")
 
 
