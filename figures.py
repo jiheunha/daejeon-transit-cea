@@ -475,7 +475,59 @@ def fig_h2(mc):
     _save(fig, "h2_scale_vs_target_short")
 
 
+def fig_l():
+    """How money moves under 준공영제 (2025, official 운영현황): fares go to a
+    shared pool, each company is paid a standard cost per licensed bus-day,
+    the city covers the gap. Drawn as boxes and arrows."""
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+    fig, ax = plt.subplots(figsize=SLOT)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 6.3)
+    ax.axis("off")
+
+    def box(x0, y0, w, h, text, fc, tc="#222222", bold=True):
+        ax.add_patch(FancyBboxPatch((x0, y0), w, h, boxstyle="round,pad=0.02,rounding_size=0.12",
+                                    fc=fc, ec="none"))
+        ax.text(x0 + w / 2, y0 + h / 2, text, ha="center", va="center", color=tc,
+                fontsize=FS - 1, fontweight="bold" if bold else "normal", linespacing=1.15)
+
+    def arrow(a, b, style="-|>", ls="-", color="#555555", rad=0.0):
+        ax.add_patch(FancyArrowPatch(a, b, arrowstyle=style, mutation_scale=18, lw=1.8, color=color,
+                                     linestyle=ls, connectionstyle=f"arc3,rad={rad}",
+                                     shrinkA=2, shrinkB=2))
+
+    box(0.1, 2.45, 1.7, 1.1, "Riders", "#d9d9d9")
+    box(3.6, 2.45, 2.4, 1.1, "Shared\nfare pool", "#f0f0f0")
+    box(7.65, 2.2, 2.25, 1.6, "13 private\ncompanies\n1,044 buses", K["C"], tc="white")
+    box(3.6, 5.05, 2.4, 0.95, "Daejeon city", "#525252", tc="white")
+
+    arrow((1.8, 3.0), (3.6, 3.0))
+    ax.text(2.7, 3.15, "Fares and\nother revenue", ha="center", va="bottom", fontsize=FS - 3, color="#333333",
+            linespacing=1.1)
+    ax.text(2.7, 2.85, "159 bn", ha="center", va="top", fontsize=FS - 1, fontweight="bold")
+
+    arrow((4.8, 5.05), (4.8, 3.55))
+    ax.text(4.95, 4.3, "Covers the gap\n102 bn", ha="left", va="center", fontsize=FS - 1, fontweight="bold",
+            color="#222222", linespacing=1.15)
+
+    arrow((6.0, 3.0), (7.65, 3.0))
+    ax.text(6.82, 3.15, "Paid per\nbus-day", ha="center", va="bottom", fontsize=FS - 3, color="#333333",
+            linespacing=1.1)
+    ax.text(6.82, 2.85, "262 bn", ha="center", va="top", fontsize=FS - 1, fontweight="bold")
+
+    arrow((8.77, 2.2), (0.95, 2.45), rad=-0.3)
+    ax.text(4.9, 0.45, "Companies own the buses and route licences and run the service",
+            ha="center", va="center", fontsize=FS - 3, color="#333333")
+
+    arrow((6.0, 5.4), (8.5, 3.8), ls=(0, (4, 3)), color="#8c8c8c")
+    ax.text(8.75, 4.95, "Route changes\nare negotiated", ha="center", va="center", fontsize=FS - 3,
+            color="#555555", linespacing=1.15)
+
+    _save(fig, "l_semi_public_flow")
+
+
 def all_figures(p, mc, torn, comp, table):
+    fig_l()
     fig_a2(mc)
     fig_h2(mc)
     fig_j()
