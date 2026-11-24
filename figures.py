@@ -124,7 +124,7 @@ def fig_bg():
     ax1.set_ylim(0, 3100)
     ax1.set_ylabel("kt CO$_2$e")
     ax1.grid(axis="y")
-    ax1.set_title("(a) Daejeon transport GHG")
+    ax1.set_title("(a) Transport GHG emissions")
     cities = ["Seoul", "Busan", "Gwangju", "Incheon", "Daegu", "Daejeon", "Ulsan"]
     sh = [d[f"transit_share_{c}"] for c in cities]
     y = np.arange(len(cities))[::-1]
@@ -164,8 +164,8 @@ def _tornado(base, df, name, xlabel, top=8):
     df = df[df.swing > 1e-9].head(top).iloc[::-1]
     fig, ax = plt.subplots(figsize=SLOT)
     y = np.arange(len(df))
-    ax.barh(y, df.at_low - base, left=base, color=TORNADO_LOW, height=0.68, label="low value")
-    ax.barh(y, df.at_high - base, left=base, color=TORNADO_HIGH, height=0.68, label="high value")
+    ax.barh(y, df.at_low - base, left=base, color=TORNADO_LOW, height=0.68, label="low input value")
+    ax.barh(y, df.at_high - base, left=base, color=TORNADO_HIGH, height=0.68, label="high input value")
     ax.axvline(base, color="#222222", lw=1.3)
     ax.axvline(0, color="#888888", lw=1, ls="--")
     ax.set_yticks(y, [PARAM_LABEL.get(p, p) for p in df.param])
@@ -186,6 +186,8 @@ def fig_b(torn):
 
 # (c) waterfall, horizontal ---------------------------------------------------------
 def fig_c(comp):
+    # items that are exactly zero at the central values (pay, efficiency) are left out
+    comp = comp[(comp.abs() > 1e-9) | (comp.index == comp.index[0])]
     labels = list(comp.index) + ["Public operator unit cost"]
     show = {"Semi-public standard cost": "Semi-public cost",
             "Guaranteed profit + bonus": "Profit + bonus",
@@ -243,9 +245,9 @@ def fig_d(mc):
 
 # (e) tram ----------------------------------------------------------------------------
 def fig_e(mc):
-    rows = [("Tram, grey H$_2$", "T1_g_pkm_smr", K["H2_smr"]),
+    rows = [("Tram, gray H$_2$", "T1_g_pkm_smr", K["H2_smr"]),
             ("Tram, Korean H$_2$ mix", "T1_g_pkm_mix", K["H2_mix"]),
-            ("Tram, biogas H$_2$ (part)", "T1_g_pkm_biogas", K["H2_biogas"]),
+            ("Tram, partly biogas H$_2$", "T1_g_pkm_biogas", K["H2_biogas"]),
             ("Tram, green H$_2$", "T1_g_pkm_green", K["H2_green"]),
             ("Battery or catenary tram", "T1_g_pkm_battery", K["tram_battery"]),
             ("Electric bus", "T1_g_pkm_e_bus", K["bus_electric"]),
@@ -258,8 +260,10 @@ def fig_e(mc):
 
 
 # (f) restructuring, two stacked panels -------------------------------------------------
-def fig_f(mc):
-    """Cost-effectiveness plane: yearly city money (x) against yearly CO2 (y)."""
+def fig_f(mc, show=None, name="f_restructuring"):
+    """Cost-effectiveness plane: yearly city money (x) against yearly CO2 (y).
+    `show`: labels (first line) to draw; others are left out but the axes stay
+    the same, so two versions can be overlaid as a click build."""
     d = pd.read_csv("data_context.csv").set_index("item")["value"]
     need_t = (d["transport_ghg_2018"] - d["transport_ghg_2030_target"]) * 1000
     mc = mc.copy()
@@ -269,31 +273,35 @@ def fig_f(mc):
     mc["H2_y"] = -mc["T1_h2_extra_t_mix"]
     mc["C10_x"] = -10.0
     mc["C10_y"] = mc["gap_pct_C_10bn"] * need_t / 100
-    pts = [("Retire tram-\nduplicating buses", "T2_saving_retire_bn", "T2_t_retire", K["T2"], (8.0, 6100), "right"),
+    pts = [("Remove buses that\noverlap the tram", "T2_saving_retire_bn", "T2_t_retire", K["T2"], (8.0, 6100), "right"),
            ("Redesign,\npublic operator", "R_D_gain", "R_D_t", K["R_D"], (12.4, 1300), "left"),
            ("Redesign,\nsemi-public", "R_C_gain", "R_C_t", K["R_C"], (3.5, -2300), "center"),
            ("More buses,\n+10 bn KRW/yr", "C10_x", "C10_y", K["C"], (-9.2, -2700), "left"),
-           ("H$_2$ tram,\nnot electric", "H2_x", "H2_y", K["H2_mix"], (-10.3, -7200), "left")]
+           ("H$_2$ tram vs\nelectric tram", "H2_x", "H2_y", K["H2_mix"], (-10.3, -7200), "left")]
     fig, ax = plt.subplots(figsize=SLOT)
     ax.axhline(0, color="#222222", lw=1)
     ax.axvline(0, color="#222222", lw=1)
     for label, cx, cy, c, off, ha in pts:
+        # hidden points are drawn fully transparent, so the layout (and the
+        # axes position) is identical in every version of the chart
+        a = 0.0 if (show is not None and label not in show) else 1.0
         xl, xm, xh = _q(mc[cx])
         yl, ym, yh = _q(mc[cy])
-        ax.plot([xl, xh], [ym, ym], color=c, lw=2.2, solid_capstyle="round")
-        ax.plot([xm, xm], [yl, yh], color=c, lw=2.2, solid_capstyle="round")
-        ax.scatter([xm], [ym], s=150, color=c, edgecolor="white", linewidth=1.2, zorder=3)
+        ax.plot([xl, xh], [ym, ym], color=c, lw=2.2, solid_capstyle="round", alpha=a)
+        ax.plot([xm, xm], [yl, yh], color=c, lw=2.2, solid_capstyle="round", alpha=a)
+        ax.scatter([xm], [ym], s=150, color=c, edgecolor="white", linewidth=1.2, zorder=3, alpha=a)
         tc = "#b35806" if c == K["R_C"] else c
-        ax.text(off[0], off[1], label, ha=ha, va="center", fontsize=FS - 1, fontweight="bold", color=tc, linespacing=1.05)
+        ax.text(off[0], off[1], label, ha=ha, va="center", fontsize=FS - 1, fontweight="bold", color=tc,
+                linespacing=1.05, alpha=a)
     ax.set_xlim(-15, 19)
     ax.set_ylim(-10500, 9800)
-    ax.text(18.6, 9500, "saves money, cuts CO$_2$", ha="right", va="top", fontsize=FS - 1, color="#6b6b6b")
-    ax.text(-14.6, -10200, "costs money, adds CO$_2$", ha="left", va="bottom", fontsize=FS - 1, color="#6b6b6b")
+    ax.text(18.6, 9500, "saves money, reduces CO$_2$", ha="right", va="top", fontsize=FS - 1, color="#6b6b6b")
+    ax.text(-14.6, -10200, "costs money, increases CO$_2$", ha="left", va="bottom", fontsize=FS - 1, color="#6b6b6b")
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:,.0f}"))
     ax.grid(True)
-    ax.set_xlabel("City money saved, bn KRW per year")
+    ax.set_xlabel("City savings, bn KRW per year")
     ax.set_ylabel("CO$_2$ avoided, t per year")
-    _save(fig, "f_restructuring")
+    _save(fig, name)
 
 
 # (g) fiscal trend ----------------------------------------------------------------------
@@ -303,7 +311,7 @@ def fig_g():
     oc, cm = d.operating_cost_100m_krw / 10, d.city_input_100m_krw / 10
     ax.plot(d.year, oc, "o-", lw=2.6, ms=7, color=K["operating_cost"])
     ax.plot(d.year, cm, "s-", lw=2.6, ms=7, color=K["C"])
-    for s, c, lab in ((oc, K["operating_cost"], "Operating cost"), (cm, K["C"], "City money")):
+    for s, c, lab in ((oc, K["operating_cost"], "Operating cost"), (cm, K["C"], "City funding")):
         ax.text(d.year.iloc[0] - 0.3, s.iloc[0], f"{s.iloc[0]:.0f}", ha="right", va="center", fontsize=FS - 1, color=c)
         ax.text(d.year.iloc[-1] + 0.3, s.iloc[-1], f"{s.iloc[-1]:.0f}", va="center", fontsize=FS, fontweight="bold", color=c)
         dy = 22 if lab == "Operating cost" else -26
@@ -328,7 +336,7 @@ def fig_h(mc):
     fig, ax = plt.subplots(figsize=SLOT)
     _hbars(ax, rows, mc, fmt=lambda v: f"{v:.2f}", suffix="%")
     ax.axvline(0, color="#222222", lw=1)
-    ax.set_xlabel("% of the cut Daejeon needs in transport by 2030")
+    ax.set_xlabel("% of the reduction Daejeon needs in transport by 2030")
     _save(fig, "h_scale_vs_target")
 
 
@@ -393,9 +401,9 @@ def fig_k(mc):
     """Unit chart: yearly money in units of one year of the Teukgu 1 bus."""
     d = pd.read_csv("data_context.csv").set_index("item")["value"]
     unit = d["tukgu_cost_bn_yr"]
-    rows = [("H$_2$ tram energy,|extra vs electric", _q(mc["T1_h2_extra_cost_bn"])[1], K["H2_mix"]),
-            ("Time lost to|tram works", _q(mc["W_time_cost_bn_yr"])[1], K["W"]),
-            ("Public-operation|saving", _q(mc["D_system_saving_bn"])[1], K["D"]),
+    rows = [("H$_2$ tram: extra energy|cost vs electric tram", _q(mc["T1_h2_extra_cost_bn"])[1], K["H2_mix"]),
+            ("Time lost to|tram construction", _q(mc["W_time_cost_bn_yr"])[1], K["W"]),
+            ("Public-operation|savings", _q(mc["D_system_saving_bn"])[1], K["D"]),
             ("Teukgu 1 bus,|one year", unit, K["tukgu"])]
     fig, ax = plt.subplots(figsize=SLOT)
     y = np.arange(len(rows))[::-1]
@@ -413,7 +421,7 @@ def fig_k(mc):
         ax.spines[sp].set_visible(False)
     ax.set_xlim(-0.2, 16.3)
     ax.set_ylim(-0.6, len(rows) - 0.4)
-    ax.set_xlabel(f"One block = one year of Teukgu 1 ({unit:.1f} bn KRW); medians")
+    ax.set_xlabel(f"One block = one year of Teukgu 1 ({unit:.1f} bn KRW)\nAll modeled values are medians", linespacing=1.4)
     _save(fig, "k_money_per_year")
 
 
@@ -435,12 +443,11 @@ def fig_h2(mc):
     d = pd.read_csv("data_context.csv").set_index("item")["value"]
     need = d["transport_ghg_2018"] - d["transport_ghg_2030_target"]
     kt = lambda col: abs(mc[col].median()) * need / 100
-    cuts = [("Retire tram-duplicating buses", kt("gap_pct_T2_retire"), K["T2"]),
-            ("Redesign, public operator", kt("gap_pct_R_D"), K["R_D"]),
-            ("2026 EV subsidy cohort", kt("gap_pct_EV_2026_cohort"), K["A_all"])]
-    adds = [("H$_2$ tram, not electric", kt("gap_pct_H2_vs_electric_tram"), K["H2_mix"]),
-            ("+10 bn KRW/yr more buses", kt("gap_pct_C_10bn"), K["C"]),
-            ("Tram works congestion", kt("gap_pct_W"), K["W"])]
+    cuts = [("Remove overlapping buses", kt("gap_pct_T2_retire"), K["T2"]),
+            ("Redesign, public operator", kt("gap_pct_R_D"), K["R_D"])]
+    adds = [("H$_2$ tram vs electric tram", kt("gap_pct_H2_vs_electric_tram"), K["H2_mix"]),
+            ("More buses, +10 bn KRW/yr", kt("gap_pct_C_10bn"), K["C"]),
+            ("Construction traffic", kt("gap_pct_W"), K["W"])]
     n, cols = int(round(need)), 45
     colours = []
     for _, v, c in cuts:
@@ -453,24 +460,24 @@ def fig_h2(mc):
     s = 0.8
     for k, c in enumerate(colours):
         ax.add_patch(plt.Rectangle((k % cols, -(k // cols)), s, s, color=c, lw=0))
-    k0 = len(colours) + 2
+    k0 = len(colours)  # adds start right after the gray squares
     for j, c in enumerate(extra):
         k = k0 + j
         ax.add_patch(plt.Rectangle((k % cols, -(k // cols)), s, s, color=c, lw=0))
     rows = (k0 + len(extra) - 1) // cols + 1
     ax.set_xlim(-0.3, cols)
     top = 3.6
-    ax.text(0, top - 0.4, f"One square = 1 kt CO$_2$ a year. Grey: the {n} kt cut needed by 2030",
+    ax.text(0, top - 0.4, f"One square = 1 kt CO$_2$ a year. Gray: the {n} kt reduction needed by 2030",
             fontsize=FS - 1, va="bottom")
     y0 = -rows - 1.2
-    for x0, head, items in ((0, "Cuts", cuts), (23, "Adds", adds)):
+    for x0, head, items in ((0, "Reductions", cuts), (25, "Increases", adds)):
         ax.text(x0, y0, head, fontsize=FS - 1, fontweight="bold", va="center")
         for i, (label, v, c) in enumerate(items):
             yy = y0 - 2.2 * (i + 1)
             ax.add_patch(plt.Rectangle((x0, yy - 0.6), 1.2, 1.2, color=c, lw=0))
-            ax.text(x0 + 2, yy, f"{label}  ", fontsize=FS - 2, va="center")
-            ax.text(x0 + 21.3, yy, f"{v:.1f}", fontsize=FS - 2, fontweight="bold", va="center", ha="right")
-    ax.set_ylim(y0 - 2.2 * 3 - 1.2, top + 1.2)
+            ax.text(x0 + 2, yy, f"{label}: {v:.1f} kt", fontsize=FS - 2, va="center")
+    ax.text(0, y0 - 2.2 * 4.1, "Scenarios are shown separately; they should not be added together.", fontsize=FS - 2, color="#555555", va="center")
+    ax.set_ylim(y0 - 2.2 * 4.6, top + 1.2)
     ax.axis("off")
     _save(fig, "h2_scale_vs_target_short")
 
@@ -498,7 +505,7 @@ def fig_l():
 
     box(0.1, 2.45, 1.7, 1.1, "Riders", "#d9d9d9")
     box(3.6, 2.45, 2.4, 1.1, "Shared\nfare pool", "#f0f0f0")
-    box(7.65, 2.2, 2.25, 1.6, "13 private\ncompanies\n1,044 buses", K["C"], tc="white")
+    box(7.65, 2.2, 2.25, 1.6, "13 private\ncompanies\n1,044 buses", "#7a7a7a", tc="white")
     box(3.6, 5.05, 2.4, 0.95, "Daejeon city", "#525252", tc="white")
 
     arrow((1.8, 3.0), (3.6, 3.0))
@@ -506,18 +513,19 @@ def fig_l():
             linespacing=1.1)
     ax.text(2.7, 2.85, "159 bn", ha="center", va="top", fontsize=FS - 1, fontweight="bold")
 
-    arrow((4.8, 5.05), (4.8, 3.55))
+    arrow((4.8, 5.05), (4.8, 3.55), color=K["C"])
     ax.text(4.95, 4.3, "Covers the gap\n102 bn", ha="left", va="center", fontsize=FS - 1, fontweight="bold",
-            color="#222222", linespacing=1.15)
+            color=K["C"], linespacing=1.15)
 
     arrow((6.0, 3.0), (7.65, 3.0))
     ax.text(6.82, 3.15, "Paid per\nbus-day", ha="center", va="bottom", fontsize=FS - 3, color="#333333",
             linespacing=1.1)
     ax.text(6.82, 2.85, "262 bn", ha="center", va="top", fontsize=FS - 1, fontweight="bold")
 
-    arrow((8.77, 2.2), (0.95, 2.45), rad=-0.3)
-    ax.text(4.9, 0.45, "Companies own the buses and route licences and run the service",
-            ha="center", va="center", fontsize=FS - 3, color="#333333")
+    ax.text(4.9, 1.25, "262 bn = 687,000 KRW per bus-day × 1,044 buses × 365 days",
+            ha="center", va="center", fontsize=FS, color="#333333")
+    ax.text(4.9, 0.5, "Paid per bus, not per rider",
+            ha="center", va="center", fontsize=FS + 2, fontweight="bold", color="#222222")
 
     arrow((6.0, 5.4), (8.5, 3.8), ls=(0, (4, 3)), color="#8c8c8c")
     ax.text(8.75, 4.95, "Route changes\nare negotiated", ha="center", va="center", fontsize=FS - 3,
@@ -539,6 +547,9 @@ def all_figures(p, mc, torn, comp, table):
     fig_d(mc)
     fig_e(mc)
     fig_f(mc)
+    # first build step of Fig. 7 (slide 13): same axes, public-operation points hidden
+    fig_f(mc, show=["Redesign,\nsemi-public", "More buses,\n+10 bn KRW/yr", "H$_2$ tram vs\nelectric tram"],
+          name="f_restructuring_step1")
     fig_g()
     fig_h(mc)
     fig_i()
